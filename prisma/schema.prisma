@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Person {
+  id_person     Int       @id @default(autoincrement())
+  first_name    String
+  last_name     String
+  created_id    Int
+  created_date  DateTime  @default(now())
+  modified_id   Int
+  modified_date DateTime
+
+  wallets       Wallet[]  @relation("PersonWallets")
+}
+
+model Wallet {
+  id_wallet  Int     @id @default(autoincrement())
+  money      Float
+  created_id    Int
+  created_date  DateTime  @default(now())
+  modified_id   Int
+  modified_date DateTime
+
+  person_id  Int
+  person     Person  @relation("PersonWallets", fields: [person_id], references: [id_person])
+}
